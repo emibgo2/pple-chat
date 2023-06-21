@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import UserService from './user.service';
 import { User } from './user.schema';
 import { log } from 'console';
+import { Validate } from 'class-validator';
 
 @Controller('user')
 export class UserController {
@@ -13,7 +14,7 @@ export class UserController {
   }
   @Post()
   async createUser(@Body() user: User) {
-    log(user);
+    log('create try user', user);
     return await this.userService.createUser(user);
   }
 }

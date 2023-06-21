@@ -1,6 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
+import { Exclude } from 'class-transformer';
+import { IsNotEmpty, IsUrl } from 'class-validator';
+import mongoose, { Types } from 'mongoose';
 import { Document } from 'mongoose';
+import { Room } from 'src/room/room.schema';
 
 export type UserDocument = User & Document;
 
@@ -20,8 +23,17 @@ export class User {
   })
   updatedAt: Date;
 
-  @Prop({ unique: true })
+  @Prop({ required: true, unique: true })
+  @IsNotEmpty({ message: '닉네임은 비어있으면 안됩니다.' })
   username: string;
+
+  @Prop({ required: true })
+  @IsUrl()
+  profileImgUrl: string;
+
+  @Exclude()
+  @Prop({ required: true, type: [{ type: Types.ObjectId, ref: 'Room' }] })
+  chatRooms: Room[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

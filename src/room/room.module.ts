@@ -1,12 +1,12 @@
+import { RoomController } from './room.controller';
 import { Module } from '@nestjs/common';
-import { MyGateway } from './gateway';
-import { RoomService } from 'src/room/room.service';
+import { RoomService } from './room.service';
 import UserService from 'src/user/user.service';
 import { MessageService } from 'src/message/message.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Message, MessageSchema } from 'src/message/message.schema';
-import { Room, RoomSchema } from 'src/room/room.schema';
+import { Room, RoomSchema } from './room.schema';
 import { User, UserSchema } from 'src/user/user.schema';
+import { Message, MessageSchema } from 'src/message/message.schema';
 
 @Module({
   imports: [
@@ -14,6 +14,7 @@ import { User, UserSchema } from 'src/user/user.schema';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MongooseModule.forFeature([{ name: Message.name, schema: MessageSchema }]),
   ],
-  providers: [MyGateway, RoomService, UserService, MessageService],
+  providers: [RoomService, UserService, MessageService],
+  controllers: [RoomController],
 })
-export class GatewayModule {}
+export class RoomModule {}

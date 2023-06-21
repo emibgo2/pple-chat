@@ -13,7 +13,6 @@ export default class UserService {
       const result = await this.userModel
         .findOne({ username: username })
         .lean();
-      log(result);
       return result;
     } catch (e) {
       console.log('error', e);
@@ -23,12 +22,12 @@ export default class UserService {
     return await this.userModel
       .findOne({ username: user.username })
       .lean()
-      .then((user) => {
-        log(user);
-        if (!user) {
-          return new this.userModel(user);
+      .then((findUser) => {
+        if (!findUser) {
+          log('new user! ', user);
+          return new this.userModel(user).save();
         }
-        return user;
+        return findUser;
       });
   }
 }
